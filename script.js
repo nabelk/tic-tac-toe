@@ -35,7 +35,12 @@ const gameboard = (() => {
             }
         }
     };
-    return { board, winConditions, checkWinner };
+
+    const checkTie = () => {
+        const arr = ['X', 'X', 'X', 'X', 'X', 'O', 'O', 'O', 'O'];
+        return gameboard.board.every((element) => arr.includes(element));
+    };
+    return { board, winConditions, checkWinner, checkTie };
 })();
 
 const displayController = (() => {
@@ -50,7 +55,7 @@ const displayController = (() => {
         const player2Display = document.querySelector('#player2 div');
         player1Display.textContent = player1.name;
         player2Display.textContent = player2.name;
-        player1H1.style.backgroundColor = 'blue';
+        player1H1.style.color = 'blue';
         const gameboardCells = document.querySelectorAll('#gameboard div');
 
         gameboardCells.forEach((cell) => {
@@ -58,32 +63,35 @@ const displayController = (() => {
                 if (cell.textContent !== '') {
                     cell.disabled = 'true';
                     cell.style.cursor = 'not-allowed';
-                } else if (player1H1.style.backgroundColor === 'blue') {
+                } else if (player1H1.style.color === 'blue') {
                     cell.textContent = player1.symbol;
                     displayController.addToBoard(
                         Number(cell.getAttribute('data-index')),
                         player1.symbol
                     );
-                    player1H1.style.backgroundColor = '';
-                    player2H1.style.backgroundColor = 'blue';
+                    player1H1.style.color = '';
+                    player2H1.style.color = 'blue';
                     console.table(gameboard.board);
 
                     if (gameboard.checkWinner() === player1.symbol) {
                         console.log(`${player1.name} Won`);
                     }
-                } else if (player2H1.style.backgroundColor === 'blue') {
+                } else if (player2H1.style.color === 'blue') {
                     cell.textContent = player2.symbol;
                     displayController.addToBoard(
                         Number(cell.getAttribute('data-index')),
                         player2.symbol
                     );
-                    player2H1.style.backgroundColor = '';
-                    player1H1.style.backgroundColor = 'blue';
+                    player2H1.style.color = '';
+                    player1H1.style.color = 'blue';
                     console.table(gameboard.board);
 
                     if (gameboard.checkWinner() === player2.symbol) {
                         console.log(`${player2.name} Won`);
                     }
+                }
+                if (gameboard.checkTie()) {
+                    console.log('game is Tie');
                 }
             });
         });
