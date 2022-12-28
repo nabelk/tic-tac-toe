@@ -1,21 +1,63 @@
+:root {
+    font-size: 18px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+}
+
+body header {
+    font-size: 3rem;
+    padding: 20px;
+    text-align: center;
+    background-color: antiquewhite;
+}
+main {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 90vh;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    background-color: brown;
+}
+
+div#player1,
+div#player2 {
+    align-self: flex-start;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    padding: 120px;
+}
+
+div#player2 {
+    margin-top: 10px;
 }
 
 div#gameboard {
     display: inline-grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
-    border: solid 2px blue;
-    padding: 10px;
+    gap: 5px;
+    padding-top: 100px;
 }
 
 div#gameboard > div {
-    border: solid 2px black;
-    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aquamarine;
+    padding: 35px;
     cursor: pointer;
+    width: 130px;
+    height: 130px;
+    font-size: 3rem;
 }
