@@ -8,26 +8,55 @@
         <title>Document</title>
     </head>
     <body>
-        <header>tic tae toe</header>
-        <main>
+        <header>Tic Tae Toe</header>
+        <div id="start-game">
+            <div>
+                <i>Ladies</i> and Gentleman, do enter names to keep the game
+                going!
+            </div>
+            <form>
+                <div>
+                    <label for="player1form" class="player1-color"
+                        >Player 1</label
+                    ><input
+                        name="player1form"
+                        id="player1form"
+                        type="text"
+                        required
+                    />
+                </div>
+                <div>
+                    <label for="player2form" class="player2-color"
+                        >Player 2</label
+                    ><input
+                        name="player2form"
+                        id="player2form"
+                        type="text"
+                        required
+                    />
+                </div>
+                <div><input type="submit" value="Start Game" /></div>
+            </form>
+        </div>
+        <main class="hidden visuallyhidden">
             <div id="player1">
                 <h1>Player 1</h1>
-                <div></div>
+                <div class="player1-color"></div>
             </div>
             <div id="gameboard">
-                <div data-index="0"></div>
-                <div data-index="1"></div>
-                <div data-index="2"></div>
-                <div data-index="3"></div>
-                <div data-index="4"></div>
-                <div data-index="5"></div>
-                <div data-index="6"></div>
-                <div data-index="7"></div>
-                <div data-index="8"></div>
+                <div data-index="0" class="hidden visuallyhidden"></div>
+                <div data-index="1" class="hidden visuallyhidden"></div>
+                <div data-index="2" class="hidden visuallyhidden"></div>
+                <div data-index="3" class="hidden visuallyhidden"></div>
+                <div data-index="4" class="hidden visuallyhidden"></div>
+                <div data-index="5" class="hidden visuallyhidden"></div>
+                <div data-index="6" class="hidden visuallyhidden"></div>
+                <div data-index="7" class="hidden visuallyhidden"></div>
+                <div data-index="8" class="hidden visuallyhidden"></div>
             </div>
             <div id="player2">
                 <h1>Player 2</h1>
-                <div></div>
+                <div class="player2-color"></div>
             </div>
         </main>
     </body>
