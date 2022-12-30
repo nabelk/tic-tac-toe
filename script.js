@@ -1,8 +1,8 @@
 function Player(name, symbol) {
     return { name, symbol };
 }
-const player1 = Player('Nabil', 'X');
-const player2 = Player('Kevin', 'O');
+const player1 = Player('', 'X');
+const player2 = Player('', 'O');
 
 const gameboard = (() => {
     const board = ['', '', '', '', '', '', '', '', ''];
@@ -48,42 +48,55 @@ const displayController = (() => {
         gameboard.board[index] = symbol;
     };
 
-    const setPlayer = () => {
+    const elementTransition = (element, time) => {
+        element.classList.remove('hidden');
+        setTimeout(() => {
+            element.classList.remove('visuallyhidden');
+        }, time);
+    };
+
+    const setGame = () => {
         const player1H1 = document.querySelector('#player1 h1');
         const player2H1 = document.querySelector('#player2 h1');
         const player1Display = document.querySelector('#player1 div');
         const player2Display = document.querySelector('#player2 div');
         player1Display.textContent = player1.name;
         player2Display.textContent = player2.name;
-        player1H1.style.color = 'blue';
+        player1H1.className = 'highlight-turn';
         const gameboardCells = document.querySelectorAll('#gameboard div');
 
         gameboardCells.forEach((cell) => {
+            elementTransition(cell, 10);
             cell.addEventListener('click', () => {
                 if (cell.textContent !== '') {
                     cell.disabled = 'true';
                     cell.style.cursor = 'not-allowed';
-                } else if (player1H1.style.color === 'blue') {
+                } else if (player1H1.classList.contains('highlight-turn')) {
+                    cell.className = 'player1-color';
                     cell.textContent = player1.symbol;
                     displayController.addToBoard(
                         Number(cell.getAttribute('data-index')),
                         player1.symbol
                     );
-                    player1H1.style.color = '';
-                    player2H1.style.color = 'blue';
+                    player1H1.className = '';
+                    player2H1.className = 'highlight-turn';
+
                     console.table(gameboard.board);
 
                     if (gameboard.checkWinner() === player1.symbol) {
                         console.log(`${player1.name} Won`);
                     }
-                } else if (player2H1.style.color === 'blue') {
+                } else if (player2H1.classList.contains('highlight-turn')) {
+                    cell.className = 'player2-color';
+
                     cell.textContent = player2.symbol;
                     displayController.addToBoard(
                         Number(cell.getAttribute('data-index')),
                         player2.symbol
                     );
-                    player2H1.style.color = '';
-                    player1H1.style.color = 'blue';
+                    player2H1.className = '';
+                    player1H1.className = 'highlight-turn';
+
                     console.table(gameboard.board);
 
                     if (gameboard.checkWinner() === player2.symbol) {
@@ -97,7 +110,22 @@ const displayController = (() => {
         });
     };
 
-    return { addToBoard, setPlayer };
+    const getForm = () => {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const startGame = document.querySelector('#start-game');
+            const main = document.querySelector('main');
+            startGame.style.display = 'none';
+            elementTransition(main, 10);
+            player1.name = event.target.player1form.value;
+            player2.name = event.target.player2form.value;
+            form.reset();
+            setGame();
+        });
+    };
+
+    return { addToBoard, elementTransition, setGame, getForm };
 })();
 
-displayController.setPlayer();
+displayController.getForm();
