@@ -2,10 +2,16 @@
     font-size: 18px;
 }
 
+@font-face {
+    font-family: font;
+    src: url(publicpixel.ttf);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: font;
 }
 
 body {
@@ -14,17 +20,93 @@ body {
     height: 100vh;
 }
 
+/* Header section  */
+
 body header {
-    font-size: 3rem;
-    padding: 20px;
+    font-size: 2.2rem;
+    font-weight: bold;
+    padding: 40px 20px 40px 20px;
     text-align: center;
-    background-color: antiquewhite;
+    background-color: #8f8369;
+    transition: all 1s ease-in;
 }
+
+/* #start-game section */
+
+div#start-game {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 35px;
+    background-color: #d5c5ac;
+    padding: 80px;
+    transition: all 1s ease-in;
+}
+
+div#start-game > div {
+    font-size: 1.2rem;
+}
+
+div#start-game form {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    justify-items: center;
+    gap: 30px;
+}
+
+label {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+.player1-color {
+    color: rgb(247, 71, 71);
+    font-weight: bold;
+}
+
+.player2-color {
+    color: lightseagreen;
+    font-weight: bold;
+}
+
+label + input {
+    padding: 8px;
+    font-size: 1.2rem;
+    border-radius: 3px;
+    border: none;
+    width: 50%;
+}
+
+input[type='submit'] {
+    padding: 9px;
+    border-radius: 3px;
+    border: none;
+    font-size: 0.9rem;
+}
+
+input[type='submit']:hover {
+    border: solid 2px black;
+}
+
+/* Main section */
+
 main {
     display: flex;
+    width: 100vw;
     justify-content: space-evenly;
     align-items: flex-start;
-    background-color: brown;
+    background-color: #d5c5ac;
+    transition: all 0.5s ease-out;
+}
+
+.hidden {
+    display: none;
+}
+
+.visuallyhidden {
+    opacity: 0;
 }
 
 div#player1,
@@ -33,9 +115,24 @@ div#player2 {
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
     width: 100%;
     padding: 120px;
+}
+
+div#player1 h1,
+div#player2 h1 {
+    font-size: 2rem;
+}
+
+.highlight-turn {
+    color: chartreuse;
+    text-shadow: 2px 2px greenyellow;
+}
+
+div#player1 div,
+div#player2 div {
+    font-size: 2rem;
 }
 
 div#player2 {
@@ -54,10 +151,12 @@ div#gameboard > div {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: aquamarine;
+    background-color: #d5c5ac;
+    border: solid 2px #c88769;
     padding: 35px;
     cursor: pointer;
     width: 130px;
     height: 130px;
     font-size: 3rem;
+    transition: all 0.3s ease-out;
 }
