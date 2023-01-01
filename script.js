@@ -21,9 +21,9 @@ const gameboard = (() => {
     const checkWinner = () => {
         for (let i = 0; i < winConditions.length; i++) {
             const condition = winConditions[i];
-            const a = board[condition[0]];
-            const b = board[condition[1]];
-            const c = board[condition[2]];
+            const a = gameboard.board[condition[0]];
+            const b = gameboard.board[condition[1]];
+            const c = gameboard.board[condition[2]];
 
             if (a === '' || b === '' || c === '') {
                 continue;
@@ -55,13 +55,40 @@ const displayController = (() => {
         }, time);
     };
 
+    const modalResult = (content) => {
+        const modalDiv = document.querySelector('.modal-result');
+        const resultDiv = document.querySelector('.winner');
+        const restartBtn = document.querySelector('.restart-game');
+        const newBtn = document.querySelector('.new-game');
+        const player1H1 = document.querySelector('#player1 h1');
+        const player2H1 = document.querySelector('#player2 h1');
+        elementTransition(modalDiv, 10);
+        player1H1.className = '';
+        player2H1.className = '';
+        resultDiv.textContent = content;
+        restartBtn.addEventListener('click', () => {
+            modalDiv.className = 'modal-result hidden visuallyhidden';
+            gameboard.board = ['', '', '', '', '', '', '', '', ''];
+            player1H1.className = 'highlight-turn';
+            player2H1.className = '';
+            const gameboardCells = document.querySelectorAll('#gameboard div');
+            gameboardCells.forEach((cell) => {
+                cell.textContent = '';
+                cell.style.cursor = '';
+            });
+        });
+        newBtn.addEventListener('click', () => {
+            window.location.reload();
+        });
+    };
+
     const setGame = () => {
         const player1H1 = document.querySelector('#player1 h1');
         const player2H1 = document.querySelector('#player2 h1');
         const player1Display = document.querySelector('#player1 div');
         const player2Display = document.querySelector('#player2 div');
-        player1Display.textContent = player1.name;
-        player2Display.textContent = player2.name;
+        player1Display.textContent = player1.name.toUpperCase();
+        player2Display.textContent = player2.name.toUpperCase();
         player1H1.className = 'highlight-turn';
         const gameboardCells = document.querySelectorAll('#gameboard div');
 
@@ -80,15 +107,8 @@ const displayController = (() => {
                     );
                     player1H1.className = '';
                     player2H1.className = 'highlight-turn';
-
-                    console.table(gameboard.board);
-
-                    if (gameboard.checkWinner() === player1.symbol) {
-                        console.log(`${player1.name} Won`);
-                    }
                 } else if (player2H1.classList.contains('highlight-turn')) {
                     cell.className = 'player2-color';
-
                     cell.textContent = player2.symbol;
                     displayController.addToBoard(
                         Number(cell.getAttribute('data-index')),
@@ -96,15 +116,14 @@ const displayController = (() => {
                     );
                     player2H1.className = '';
                     player1H1.className = 'highlight-turn';
-
-                    console.table(gameboard.board);
-
-                    if (gameboard.checkWinner() === player2.symbol) {
-                        console.log(`${player2.name} Won`);
-                    }
                 }
-                if (gameboard.checkTie()) {
-                    console.log('game is Tie');
+
+                if (gameboard.checkWinner() === 'X') {
+                    modalResult(`${player1.name.toUpperCase()} WON!`);
+                } else if (gameboard.checkWinner() === 'O') {
+                    modalResult(`${player2.name.toUpperCase()} WON!`);
+                } else if (gameboard.checkTie()) {
+                    modalResult("IT'S A TIE!");
                 }
             });
         });
@@ -125,7 +144,7 @@ const displayController = (() => {
         });
     };
 
-    return { addToBoard, elementTransition, setGame, getForm };
+    return { addToBoard, elementTransition, modalResult, setGame, getForm };
 })();
 
 displayController.getForm();
