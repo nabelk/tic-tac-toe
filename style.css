@@ -99,6 +99,31 @@ main {
     align-items: flex-start;
     background-color: #d5c5ac;
     transition: all 0.5s ease-out;
+    position: relative;
+}
+
+.modal-result {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    row-gap: 20px;
+    column-gap: 10px;
+    position: absolute;
+    align-self: center;
+    background-color: red;
+    transition: all 0.4s ease-out;
+    padding: 20px;
+}
+
+.modal-result div:first-child {
+    grid-column: 1/3;
+    font-size: 1.4rem;
+}
+
+.modal-result button {
+    padding: 8px;
 }
 
 .hidden {
