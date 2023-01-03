@@ -31,9 +31,21 @@ body header {
     transition: all 1s ease-in;
 }
 
+/* Menu section  */
+
+div#menu {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    padding: 60px;
+    background-color: #d5c5ac;
+    transition: all 1s ease-in;
+}
+
 /* #start-game section */
 
-div#start-game {
+.start-game {
     width: 100vw;
     display: flex;
     flex-direction: column;
@@ -42,14 +54,13 @@ div#start-game {
     gap: 35px;
     background-color: #d5c5ac;
     padding: 80px;
-    transition: all 1s ease-in;
 }
 
-div#start-game > div {
+.start-game > div {
     font-size: 1.2rem;
 }
 
-div#start-game form {
+.start-game form {
     display: grid;
     grid-template-rows: auto auto auto;
     justify-items: center;
@@ -79,14 +90,16 @@ label + input {
     width: 50%;
 }
 
-input[type='submit'] {
+input[type='submit'],
+div#menu button {
     padding: 9px;
     border-radius: 3px;
     border: none;
     font-size: 0.9rem;
 }
 
-input[type='submit']:hover {
+input[type='submit']:hover,
+div#menu button:hover {
     border: solid 2px black;
 }
 
