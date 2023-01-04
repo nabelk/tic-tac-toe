@@ -1,8 +1,12 @@
+// Player factory function
+
 function Player(name, symbol) {
     return { name, symbol };
 }
 const player1 = Player('', 'X');
 const player2 = Player('', 'O');
+
+// Gameboard module
 
 const gameboard = (() => {
     const board = ['', '', '', '', '', '', '', '', ''];
@@ -30,7 +34,12 @@ const gameboard = (() => {
             }
 
             if (a === b && b === c) {
-                return a;
+                condition.forEach((index) => {
+                    document.querySelector(
+                        `[data-index="${index}"]`
+                    ).style.backgroundColor = 'chartreuse';
+                }); // Give a winning condition elements change of bg color
+                return a; // Return winner symbol
                 break;
             }
         }
@@ -43,7 +52,11 @@ const gameboard = (() => {
     return { board, winConditions, checkWinner, checkTie };
 })();
 
+// Display controller module
+
 const displayController = (() => {
+    // Add symbol to the board from event click
+
     const addToBoard = (index, symbol) => {
         gameboard.board[index] = symbol;
     };
@@ -55,7 +68,18 @@ const displayController = (() => {
         }, time);
     };
 
+    const soundEffect = (classchoice, volume) => {
+        const audio = document.querySelector(classchoice);
+        if (!audio) return;
+        audio.volume = volume;
+        audio.currentTime = 0;
+        audio.play();
+    };
+
+    // Result display & restart/new game btn
+
     const modalResult = (content) => {
+        soundEffect('.result-sound', 0.2);
         const modalDiv = document.querySelector('.modal-result');
         const resultDiv = document.querySelector('.winner');
         const restartBtn = document.querySelector('.restart-game');
@@ -67,6 +91,7 @@ const displayController = (() => {
         player2H1.className = '';
         resultDiv.textContent = content;
         restartBtn.addEventListener('click', () => {
+            soundEffect('.start-sound', 0.4);
             modalDiv.className = 'modal-result hidden visuallyhidden';
             gameboard.board = ['', '', '', '', '', '', '', '', ''];
             player1H1.className = 'highlight-turn';
@@ -75,12 +100,15 @@ const displayController = (() => {
             gameboardCells.forEach((cell) => {
                 cell.textContent = '';
                 cell.style.cursor = '';
+                cell.style.backgroundColor = '';
             });
         });
         newBtn.addEventListener('click', () => {
             window.location.reload();
         });
     };
+
+    // Set 2 players mode
 
     const setGame = () => {
         const player1H1 = document.querySelector('#player1 h1');
@@ -99,6 +127,7 @@ const displayController = (() => {
                     cell.disabled = 'true';
                     cell.style.cursor = 'not-allowed';
                 } else if (player1H1.classList.contains('highlight-turn')) {
+                    soundEffect('.take-turn', 1);
                     cell.className = 'player1-color';
                     cell.textContent = player1.symbol;
                     addToBoard(
@@ -108,6 +137,7 @@ const displayController = (() => {
                     player1H1.className = '';
                     player2H1.className = 'highlight-turn';
                 } else if (player2H1.classList.contains('highlight-turn')) {
+                    soundEffect('.take-turn', 1);
                     cell.className = 'player2-color';
                     cell.textContent = player2.symbol;
                     addToBoard(
@@ -129,6 +159,8 @@ const displayController = (() => {
         });
     };
 
+    // Get a computer value for its turn
+
     const computerMove = () => {
         const randomIndex = Math.floor(Math.random() * gameboard.board.length);
         if (gameboard.board[randomIndex] !== '') {
@@ -142,6 +174,8 @@ const displayController = (() => {
             addToBoard(randomIndex, player2.symbol);
         }
     };
+
+    // Set vs computer mode
 
     const setVsAI = () => {
         const gameboardCells = document.querySelectorAll('#gameboard div');
@@ -157,6 +191,7 @@ const displayController = (() => {
                     cell.disabled = 'true';
                     cell.style.cursor = 'not-allowed';
                 } else if (player1H1.classList.contains('highlight-turn')) {
+                    soundEffect('.take-turn', 1);
                     cell.className = 'player1-color';
                     cell.textContent = player1.symbol;
                     addToBoard(
@@ -172,6 +207,7 @@ const displayController = (() => {
                         modalResult("IT'S A TIE!");
                     } else if (!gameboard.checkTie()) {
                         setTimeout(() => {
+                            soundEffect('.take-turn', 1);
                             computerMove();
                             if (gameboard.checkWinner() === 'O') {
                                 modalResult(`COMPUTER WON!`);
@@ -186,9 +222,12 @@ const displayController = (() => {
         });
     };
 
+    // Get value from form
+
     const getForm = () => {
         const form = document.querySelector('form');
         form.addEventListener('submit', (event) => {
+            soundEffect('.start-sound', 0.4);
             event.preventDefault();
             const startGame = document.querySelector('.start-game');
             const main = document.querySelector('main');
@@ -207,11 +246,13 @@ const displayController = (() => {
         const humanMode = document.querySelector('.human-mode');
         const aiMode = document.querySelector('.ai-mode');
         humanMode.addEventListener('click', () => {
+            soundEffect('.start-sound', 0.4);
             menu.style.display = 'none';
             elementTransition(startGame, 10);
             getForm();
         });
         aiMode.addEventListener('click', () => {
+            soundEffect('.start-sound', 0.4);
             const main = document.querySelector('main');
             elementTransition(main, 10);
             menu.style.display = 'none';
@@ -222,6 +263,7 @@ const displayController = (() => {
     return {
         addToBoard,
         elementTransition,
+        soundEffect,
         modalResult,
         setGame,
         computerMove,
